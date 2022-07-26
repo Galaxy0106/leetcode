@@ -26,10 +26,10 @@ public:
     }
 };
 
-int main(){
-    Solution sol;
-    vector<vector<int>> grid = {{1,3,1},{1,5,1},{4,2,1}};
-    sol.minPathSum(grid);
-    cout << sol.ans;
-    return 0;
-}
+// int main(){
+//     Solution sol;
+//     vector<vector<int>> grid = {{1,3,1},{1,5,1},{4,2,1}};
+//     sol.minPathSum(grid);
+//     cout << sol.ans;
+//     return 0;
+// }
