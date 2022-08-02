@@ -17,9 +17,9 @@ public:
     }
 };
 
-int main(){
-    vector<int> prices = {7,1,5,3,6,4};
-    Solution sol;
-    cout << sol.maxProfit(prices);
-    return 0;
-}
+// int main(){
+//     vector<int> prices = {7,1,5,3,6,4};
+//     Solution sol;
+//     cout << sol.maxProfit(prices);
+//     return 0;
+// }
