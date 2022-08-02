@@ -8,7 +8,7 @@ public:
     int longestPalindromeSubseq(string s) {
         int len = s.size();
         // 定义状态
-        vector<vector<int>> dp(len, vector<int>(len));
+        vector<vector<int>> dp(len, vector<int>(len, 0));
         // 初始化 base case
         for(int i = 0;i < len;i++){
             dp[i][i] = 1;
@@ -28,7 +28,7 @@ public:
     }
 };
 
-int main(){
+// int main(){
 
-    return 0;
-}
+//     return 0;
+// }
