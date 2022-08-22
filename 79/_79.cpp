@@ -1,66 +1,65 @@
-#include<bits/stdc++.h>
+#include <iostream>
+#include <bits/stdc++.h>
 
 using namespace std;
 
 class Solution {
 public:
-    bool is_over(vector<vector<char>>& board){
-        for(int i = 0;i < board.size();i++){
-            for(int j = 0;j < board[i].size();j++){
-                if(board[i][j] != '#')
-                    return false;
-            }
-        }
-        return true;
-    }
-
-    bool bfs(vector<vector<char>>& board, int pos_x, int pos_y, string temp, string word){    
-        // Judge if over
-        if(is_over(board) && temp != word){
+    bool dfs(int posX, int posY, vector<vector<char>>& board, vector<vector<bool>>& isVis, string word, int posStr){
+        cout << posStr << board[posX][posY] << " ";
+        if(board[posX][posY] != word[posStr]){
+            isVis[posX][posY] = false;
             return false;
         }
+        isVis[posX][posY] = true;
 
-        if(temp == word){
-            return true;
+        // 向上
+        if(posX > 0 && !isVis[posX-1][posY]){
+            if(dfs(posX-1, posY, board, isVis, word, posStr + 1))
+                return true;
         }
-
-        // up
-        
-
-
-
-
+        // 向下
+        if(posX < isVis.size() - 1 && !isVis[posX+1][posY]){
+            if(dfs(posX+1, posY, board, isVis, word, posStr + 1))
+                return true;
+        }
+        // 向左
+        if(posY > 0 && !isVis[posX][posY-1]){
+            if(dfs(posX, posY-1, board, isVis, word, posStr + 1))
+                return true;
+        }
+        // 向右
+        if(posY < isVis[0].size() - 1 && !isVis[posX][posY+1]){
+            if(dfs(posX, posY+1, board, isVis, word, posStr + 1))
+                return true;
+        }
+        if(posStr == word.size() - 1)
+            return true;
+        return false;
     }
 
+
     bool exist(vector<vector<char>>& board, string word) {
-        // Initialize a record
-        for(int i = 0;i < board.size();i++){
-            vector<bool> temp;
-            for(int j = 0;j < board[i].size();j++){
-                temp.push_back(false);
-            }
-            record.push_back(temp);
-        }
-        // Initialize an empty string
-        string temp;
-        // BFS
-        bool res;
+        bool res = false;
         for(int i = 0;i < board.size();i++){
             for(int j = 0;j < board[i].size();j++){
-                res = bfs(board, record, i, j, temp, word);
-
+                int m = board.size();
+                int n = board[i].size();
+                vector<vector<bool>> isVis = vector<vector<bool>>(m, vector<bool>(n));
+                res = dfs(i, j, board, isVis, word, 0);
+                if(res)
+                    return true;
             }
         }
-
-
-
+        return res;
     }
 };
 
+using namespace std;
 
 int main(){
-
-
-
+    vector<vector<char>> board = {{'A','B','C','E'}, {'S','F','E','S'}, {'A','D','E','E'}};
+    Solution sol;
+    cout << sol.exist(board, "ABCESEEEFS");
     return 0;
 }
