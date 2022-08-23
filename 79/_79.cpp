@@ -1,65 +1,53 @@
-#include <iostream>
 #include <bits/stdc++.h>
 
 using namespace std;
 
 class Solution {
 public:
-    bool dfs(int posX, int posY, vector<vector<char>>& board, vector<vector<bool>>& isVis, string word, int posStr){
-        cout << posStr << board[posX][posY] << " ";
-        if(board[posX][posY] != word[posStr]){
-            isVis[posX][posY] = false;
+    bool check(vector<vector<char>>& board, vector<vector<bool>>& is_visited, string word, int i, int j, int k) {
+        if(board[i][j] != word[k])
             return false;
-        }
-        isVis[posX][posY] = true;
-
-        // 向上
-        if(posX > 0 && !isVis[posX-1][posY]){
-            if(dfs(posX-1, posY, board, isVis, word, posStr + 1))
-                return true;
-        }
-        // 向下
-        if(posX < isVis.size() - 1 && !isVis[posX+1][posY]){
-            if(dfs(posX+1, posY, board, isVis, word, posStr + 1))
-                return true;
-        }
-        // 向左
-        if(posY > 0 && !isVis[posX][posY-1]){
-            if(dfs(posX, posY-1, board, isVis, word, posStr + 1))
-                return true;
-        }
-        // 向右
-        if(posY < isVis[0].size() - 1 && !isVis[posX][posY+1]){
-            if(dfs(posX, posY+1, board, isVis, word, posStr + 1))
-                return true;
-        }
-        if(posStr == word.size() - 1)
+        if(k == word.size() - 1)
             return true;
-        return false;
+
+        is_visited[i][j] = true;
+        bool res = false;
+        vector<pair<int, int>> dirs = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+        for(auto& dir : dirs){
+            int ix = i + dir.first; // 上下
+            int iy = j + dir.second;
+            if(ix >= 0 && ix < board.size() && iy >=0 && iy < board[0].size()){
+                if(is_visited[ix][iy] == false){
+                    bool flag = check(board, is_visited, word, ix, iy, k+1);
+                    if(flag){
+                        res = true;
+                        break;
+                    }
+                }
+            }
+        }
+        is_visited[i][j] = false;
+        return res;
     }
 
 
     bool exist(vector<vector<char>>& board, string word) {
-        bool res = false;
-        for(int i = 0;i < board.size();i++){
-            for(int j = 0;j < board[i].size();j++){
-                int m = board.size();
-                int n = board[i].size();
-                vector<vector<bool>> isVis = vector<vector<bool>>(m, vector<bool>(n));
-                res = dfs(i, j, board, isVis, word, 0);
-                if(res)
+        int m = board.size();
+        int n = board[0].size();
+        // 是否访问过的记录
+        vector<vector<bool>> is_visited(m, vector<bool>(n, false));
+        for(int i = 0;i < m;i++){
+            for(int j = 0;j < n;j++){
+                bool flag = check(board, is_visited, word, i, j, 0);
+                if(flag)
                     return true;
             }
         }
-        return res;
+        return false;
     }
 };
 
-using namespace std;
-
 int main(){
-    vector<vector<char>> board = {{'A','B','C','E'}, {'S','F','E','S'}, {'A','D','E','E'}};
-    Solution sol;
-    cout << sol.exist(board, "ABCESEEEFS");
+
     return 0;
 }
