@@ -5,46 +5,39 @@ using namespace std;
 class Solution {
 public:
     bool checkInclusion(string s1, string s2) {
-        bool res = false;
-        unordered_map<char, int> window, needs;
-        for(char& c : s1){
-            needs[c]++;
+        unordered_map<char, int> win;
+        unordered_map<char, int> need;
+        int valid = 0;
+        for(int i = 0;i < s1.size();i++){
+            need[s1[i]]++;
         }
-        // 前闭后开
         int left = 0, right = 0;
-        int valid =0;
         while(right < s2.size()){
+            // 增大窗口
             char c = s2[right];
             right++;
-            if(needs.count(c)){
-                window[c]++;
-                if(needs[c] == window[c]){
+            if(need.count(c)){
+                win[c]++;
+                if(win[c] == need[c]){
                     valid++;
                 }
-                if(valid == needs.size()){
-                    res = true;
-                    break;
+            }
+            // 收缩窗口
+            while(right - left > s1.size()){
+                char d = s2[left];
+                left++;
+                // 窗口内的数据更新
+                if(need.count(d)){
+                    if(win[d] == need[d]){
+                        valid--;
+                    }
+                    win[d]--;
                 }
             }
-
-            
-
-
-
-
-            // else{
-            //     while(right - left >= s1.size()){
-            //         char d = s2[left];
-            //         left++;
-            //         if(needs.count(d)){
-            //             if(needs[c] == window[c])
-            //                 valid--;
-            //             window[c]--;
-            //         }
-            //     }
-            // }
+            if(valid == need.size())
+                return true;
         }
-        return res;
+        return false;
     }
 };
 
