@@ -36,10 +36,10 @@ public:
     }
 };
 
-int main(){
-    Solution sol;
-    vector<int> nums = {5,1,3,5,10,7,4,9,2,8};
-    int target = 15;
-    cout << sol.minSubArrayLen(target, nums);
-    return 0;
-}
+// int main(){
+//     Solution sol;
+//     vector<int> nums = {5,1,3,5,10,7,4,9,2,8};
+//     int target = 15;
+//     cout << sol.minSubArrayLen(target, nums);
+//     return 0;
+// }
